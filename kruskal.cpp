@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <utility>
 
+const int GRAPH_SIZE = 1000;
+
 struct Edge
 {
   int from;
@@ -16,33 +18,56 @@ struct Edge
   }
 };
 
-void Prim(const std::vector<std::vector<Edge>>& graph,
+int find_set(int v, std::vector<int>& parent)
+{
+  if (v == parent[v])
+  {
+    return v;
+  }
+  return parent[v] = find_set(parent[v], parent);
+}
+
+void union_sets(int u, int v, std::vector<int>& parent)
+{
+  u = find_set(u, parent);
+  v = find_set(v, parent);
+  if (u != v)
+  {
+    parent[u] = v;
+  }
+}
+
+void Kruskal(const std::vector<std::vector<Edge>>& graph,
     std::vector<Edge>& mst_edges)
 {
-  std::priority_queue<Edge> edges_list;
-  edges_list.push({0, 0, 0.0});
-  std::vector<bool> currently_in_mst(graph.size(), false);
-  while (!edges_list.empty())
+  std::vector<int> components(graph.size());
+  for (int i = 0; i < components.size(); ++i)
   {
-    Edge current_edge = edges_list.top();
-    int v = current_edge.to;
-    edges_list.pop();
-    if (currently_in_mst[v])
+    components[i] = i;
+  }
+  std::priority_queue<Edge> all_edges;
+  for (int i = 0; i < graph.size(); ++i)
+  {
+    for (auto edge : graph[i])
     {
-      continue;
-    }
-    if (current_edge.from != current_edge.to)
-    {
-      mst_edges.push_back(current_edge);
-    }
-    currently_in_mst[v] = true;
-    for (const Edge& edge : graph[v])
-    {
-      if (!currently_in_mst[edge.to])
+      if (edge.from < edge.to)
       {
-        edges_list.push(edge);
+        all_edges.push(edge);
       }
     }
+  }
+  for (int iteration = 0; iteration < graph.size() - 1; ++iteration)
+  {
+    Edge current_edge;
+    do
+    {
+      current_edge = all_edges.top();
+      all_edges.pop();
+    }
+    while (find_set(current_edge.to, components) ==
+        find_set(current_edge.from, components));
+    mst_edges.push_back(current_edge);
+    union_sets(current_edge.from, current_edge.to, components);
   }
 }
 
@@ -60,7 +85,7 @@ int main()
     graph[to].push_back({to, from, weight});
   }
   std::vector<Edge> mst;
-  Prim(graph, mst);
+  Kruskal(graph, mst);
   std::sort(mst.begin(), mst.end(),
       [](const Edge& e1, const Edge& e2)
       { return std::make_pair(
