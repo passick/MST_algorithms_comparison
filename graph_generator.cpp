@@ -61,6 +61,7 @@ int main(int argc, char **argv)
     graph[from][to] = graph[to][from] = rand() / (RAND_MAX + 1.0);
     added_edges++;
   }
+  std::cout << GRAPH_SIZE << ' ' << required_number << std::endl;
   for (int i = 0; i < GRAPH_SIZE; ++i)
   {
     for (int j = 0; j < i; ++j)
