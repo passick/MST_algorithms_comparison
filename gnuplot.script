@@ -1,0 +1,8 @@
+set terminal png enhanced font "Helvetica,15"
+set output "Graphs.png"
+set ylabel "Time"
+set xlabel "Graph density"
+
+plot 'test/prim.time' with lines title "Prim", \
+  'test/kruskal.time' with lines title "Kruskal", \
+  'test/boruvka.time' with lines title "Borůvka"

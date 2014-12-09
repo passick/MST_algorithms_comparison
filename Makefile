@@ -10,5 +10,8 @@ boruvka: boruvka.cpp
 test: all
 	/bin/bash ./tester.sh
 
+plot:
+	gnuplot ./gnuplot.script
+
 clean:
 	$(RM) prim graph_generator kruskal boruvka ./test/*
