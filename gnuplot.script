@@ -1,5 +1,6 @@
-set terminal png enhanced font "Helvetica,15"
-set output "Graphs.png"
+#set terminal png enhanced font "Helvetica,15"
+set terminal epslatex color
+set output "analysis/plot.tex"
 set ylabel "Time"
 set xlabel "Graph density"
 
