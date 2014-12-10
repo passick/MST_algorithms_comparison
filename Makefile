@@ -23,4 +23,4 @@ analysis/analysis.pdf: analysis.tex analysis/plot.tex
 
 clean:
 	$(RM) prim graph_generator kruskal boruvka ./test/* \
-	  ./analysis/* ./analysis.pdf
+	  ./analysis/*
